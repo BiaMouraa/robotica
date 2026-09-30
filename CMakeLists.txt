@@ -28,3 +28,13 @@ ament_package()
 install(DIRECTORY urdf launch config
   DESTINATION share/${PROJECT_NAME}
 )
+
+install(PROGRAMS meu_robo_description/pose_control_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME pose_control_node
+)
+
+install(PROGRAMS meu_robo_description/trajectory_eight_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME trajectory_eight_node
+)

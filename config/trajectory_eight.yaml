@@ -1,0 +1,9 @@
+trajectory_eight_node:
+  ros__parameters:
+    A: 1.0
+    B: 2.0
+    omega: 0.5
+    kff: 1.0
+    use_feedback: true
+    kp_x: 1.0
+    kp_y: 1.0
