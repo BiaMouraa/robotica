@@ -1,9 +1,33 @@
 trajectory_eight_node:
   ros__parameters:
+    # Trajetoria: x = A sin(wt), y = (B/2) sin(2wt)   (periodo = 2*pi/omega ~ 21 s)
     A: 1.0
     B: 2.0
-    omega: 0.5
+    omega: 0.3
+
+    # Controle (feedforward + realimentacao proporcional em um ponto a frente)
     kff: 1.0
     use_feedback: true
-    kp_x: 1.0
-    kp_y: 1.0
+    kp_x: 2.0
+    kp_y: 2.0
+    lookahead: 0.25
+    v_max: 0.8
+    w_max: 2.5
+    control_rate: 20.0
+
+    # Fonte de pose: true = IMU (yaw) + GPS (x, y); false = /odom
+    use_sensors: true
+    start_delay: 2.0
+    gps_origin_samples: 10
+
+    # Gazebo 11 publica lat/lon com Leste e Norte invertidos (bug conhecido).
+    # Em um GPS real, use +1.0 / +1.0.
+    gps_x_sign: -1.0
+    gps_y_sign: -1.0
+
+    # Posicao da antena GPS em relacao ao centro do robo (ver URDF: gps_joint)
+    gps_offset_x: -0.15
+    gps_offset_y: 0.0
+
+    # Filtro passa-baixa do GPS (1.0 = sem filtro; menor = mais suave, mais atraso)
+    gps_filter_alpha: 0.6

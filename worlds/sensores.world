@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="sensores">
+
+    <include><uri>model://ground_plane</uri></include>
+    <include><uri>model://sun</uri></include>
+
+    <!-- Origem geografica do GPS (Joao Pessoa - PB). Eixo X = Leste, Y = Norte (ENU). -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>-7.1375</latitude_deg>
+      <longitude_deg>-34.8450</longitude_deg>
+      <elevation>40.0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <!-- Obstaculos ao redor da trajetoria em 8 (x em [-1,1], y em [-1,1]) -->
+    <model name="caixa_norte">
+      <static>true</static>
+      <pose>0 3.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>1.0 0.4 1.0</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.0 0.4 1.0</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Red</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name="caixa_sul">
+      <static>true</static>
+      <pose>0 -3.0 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>1.0 0.4 1.0</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>1.0 0.4 1.0</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Green</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name="cilindro_leste">
+      <static>true</static>
+      <pose>3.0 0 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>1.2</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Blue</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name="cilindro_oeste">
+      <static>true</static>
+      <pose>-3.0 0 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><cylinder><radius>0.3</radius><length>1.2</length></cylinder></geometry></collision>
+        <visual name="v"><geometry><cylinder><radius>0.3</radius><length>1.2</length></cylinder></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Yellow</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name="parede_ne">
+      <static>true</static>
+      <pose>2.5 2.5 0.4 0 0 0.785</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>2.0 0.2 0.8</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.0 0.2 0.8</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name="parede_so">
+      <static>true</static>
+      <pose>-2.5 -2.5 0.4 0 0 0.785</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>2.0 0.2 0.8</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2.0 0.2 0.8</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Grey</name></script></material></visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

@@ -1,0 +1,19 @@
+# Forca LF em todos os arquivos de texto: o projeto roda no Linux (WSL/ROS 2)
+# e scripts Python com CRLF quebram o shebang (#!/usr/bin/env python3\r).
+* text=auto eol=lf
+
+*.py     text eol=lf
+*.yaml   text eol=lf
+*.xacro  text eol=lf
+*.urdf   text eol=lf
+*.world  text eol=lf
+*.rviz   text eol=lf
+*.xml    text eol=lf
+*.txt    text eol=lf
+*.md     text eol=lf
+
+*.png    binary
+*.jpg    binary
+*.pdf    binary
+*.stl    binary
+*.dae    binary
