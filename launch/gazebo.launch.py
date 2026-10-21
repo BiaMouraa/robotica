@@ -4,24 +4,27 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+import xacro
 
 def generate_launch_description():
-    package_name = 'meu_robo_description'
+    pkg_meu_robo = get_package_share_directory('meu_robo_description')
+    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
-    urdf_file = os.path.join(get_package_share_directory(package_name), 'urdf', 'meu_robo.urdf')
-    with open(urdf_file, 'r') as infp:
-        robot_desc = infp.read()
+    xacro_file = os.path.join(pkg_meu_robo, 'urdf', 'meu_robo.urdf.xacro')
+    robot_description_config = xacro.process_file(xacro_file)
+    robot_desc = robot_description_config.toxml()
 
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
-        parameters=[{'robot_description': robot_desc}]
+        parameters=[{'robot_description': robot_desc, 'use_sim_time': True}]
     )
 
     gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py')
+        )
     )
 
     spawn_entity = Node(

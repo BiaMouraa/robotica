@@ -1,0 +1,5 @@
+pose_control_node:
+  ros__parameters:
+    kp_linear: 0.5
+    kp_angular: 1.5
+    tolerance: 0.05
