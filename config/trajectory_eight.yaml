@@ -15,19 +15,21 @@ trajectory_eight_node:
     w_max: 2.5
     control_rate: 20.0
 
-    # Fonte de pose: true = IMU (yaw) + GPS (x, y); false = /odom
+    # Fonte de pose para o controle:
+    #   ekf     = /odometry/filtered  (filtro de Kalman, pratica 05)
+    #   sensors = IMU + GPS com EMA   (pratica 04)
+    #   odom    = /odom
+    pose_source: ekf
     use_sensors: true
-    start_delay: 2.0
+    start_delay: 3.0
     gps_origin_samples: 10
 
     # Gazebo 11 publica lat/lon com Leste e Norte invertidos (bug conhecido).
-    # Em um GPS real, use +1.0 / +1.0.
     gps_x_sign: -1.0
     gps_y_sign: -1.0
 
-    # Posicao da antena GPS em relacao ao centro do robo (ver URDF: gps_joint)
     gps_offset_x: -0.15
     gps_offset_y: 0.0
 
-    # Filtro passa-baixa do GPS (1.0 = sem filtro; menor = mais suave, mais atraso)
+    # Usado apenas se pose_source:=sensors
     gps_filter_alpha: 0.6

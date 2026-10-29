@@ -3,7 +3,7 @@
 <package format="3">
   <name>meu_robo_description</name>
   <version>0.0.0</version>
-  <description>Robo diferencial com IMU, GPS, camera e lidar (Praticas 02-04 de Robotica)</description>
+  <description>Robo diferencial com IMU, GPS, camera, lidar e EKF (Praticas 02-05 de Robotica)</description>
   <maintainer email="matheusendonca@todo.todo">matheusendonca</maintainer>
   <license>TODO: License declaration</license>
 
@@ -21,9 +21,11 @@
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>plotjuggler_ros</exec_depend>
   <exec_depend>tf2_tools</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

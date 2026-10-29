@@ -1,5 +1,8 @@
 """
-Simulacao do robo no Gazebo Classic com os sensores da Pratica 04.
+Simulacao do robo no Gazebo Classic (Praticas 04-05).
+
+Sobe o Gazebo, os sensores, o sensor_prep_node (GPS -> /odometry/gps) e o
+EKF do robot_localization (/odometry/filtered).
 
 Argumentos:
   noise_scale  : multiplicador do ruido de TODOS os sensores (padrao 1.0)
@@ -11,7 +14,7 @@ Argumentos:
 Exemplos:
   ros2 launch meu_robo_description gazebo.launch.py
   ros2 launch meu_robo_description gazebo.launch.py rviz:=true plotjuggler:=true
-  ros2 launch meu_robo_description gazebo.launch.py noise_scale:=5.0
+  ros2 launch meu_robo_description gazebo.launch.py noise_scale:=8.0 plotjuggler:=true
 """
 import os
 
@@ -33,6 +36,7 @@ def generate_launch_description():
     default_world = os.path.join(pkg_meu_robo, 'worlds', 'sensores.world')
     rviz_config = os.path.join(pkg_meu_robo, 'config', 'sensores.rviz')
     plotjuggler_layout = os.path.join(pkg_meu_robo, 'config', 'sensores.plotjuggler.xml')
+    ekf_params = os.path.join(pkg_meu_robo, 'config', 'ekf.yaml')
 
     noise_scale = LaunchConfiguration('noise_scale')
     world = LaunchConfiguration('world')
@@ -114,6 +118,27 @@ def generate_launch_description():
         condition=IfCondition(use_plotjuggler),
     )
 
+    # GPS lat/lon -> /odometry/gps  +  IMU com covariancia -> /imu/data_cov
+    sensor_prep = Node(
+        package='meu_robo_description',
+        executable='sensor_prep_node',
+        name='sensor_prep_node',
+        output='screen',
+        parameters=[{
+            'use_sim_time': True,
+            'noise_scale': ParameterValue(noise_scale, value_type=float),
+        }],
+    )
+
+    # Filtro de Kalman (robot_localization) -> /odometry/filtered
+    ekf = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[ekf_params, {'use_sim_time': True}],
+    )
+
     return LaunchDescription(declare_args + [
         # Evita o Gazebo tentar consultar o banco de modelos online na
         # inicializacao (demora/trava sem internet; os modelos sao locais).
@@ -122,6 +147,8 @@ def generate_launch_description():
         gzserver,
         gzclient,
         spawn_entity,
+        sensor_prep,
+        ekf,
         rviz,
         plotjuggler,
     ])

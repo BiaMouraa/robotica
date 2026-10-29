@@ -38,3 +38,8 @@ install(PROGRAMS meu_robo_description/trajectory_eight_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME trajectory_eight_node
 )
+
+install(PROGRAMS meu_robo_description/sensor_prep_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME sensor_prep_node
+)

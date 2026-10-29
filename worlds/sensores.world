@@ -14,6 +14,14 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
 
+    <!-- Publica /gazebo/model_states (pose real, sem ruido) para ground truth -->
+    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+      <update_rate>50.0</update_rate>
+    </plugin>
+
     <physics type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>

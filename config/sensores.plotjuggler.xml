@@ -1,6 +1,78 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <root>
  <tabbed_widget name="Main Window" parent="main_window">
+  <Tab tab_name="Estimacao XY" containers="1">
+   <Container>
+    <DockSplitter orientation="-" sizes="1" count="1">
+     <DockArea name="XY: referencia / groundtruth / bruto / EKF">
+      <plot mode="XYPlot" style="Lines" flip_x="false" flip_y="false">
+       <range left="-1.6" right="1.6" top="1.6" bottom="-1.6"/>
+       <limitY/>
+       <curve name="referencia" color="#2ca02c" curve_x="/trajectory_eight/reference/point/x" curve_y="/trajectory_eight/reference/point/y"/>
+       <curve name="groundtruth" color="#1f77b4" curve_x="/state/groundtruth/point/x" curve_y="/state/groundtruth/point/y"/>
+       <curve name="sensores_brutos" color="#bcbd22" curve_x="/state/raw/point/x" curve_y="/state/raw/point/y"/>
+       <curve name="ekf" color="#ff7f0e" curve_x="/state/filtered/point/x" curve_y="/state/filtered/point/y"/>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="Estados x y yaw" containers="1">
+   <Container>
+    <DockSplitter orientation="-" sizes="0.34;0.33;0.33" count="3">
+     <DockArea name="x [m]">
+      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
+       <range left="0" right="40" top="1.6" bottom="-1.6"/>
+       <limitY/>
+       <curve name="/trajectory_eight/reference/point/x" color="#2ca02c"/>
+       <curve name="/state/groundtruth/point/x" color="#1f77b4"/>
+       <curve name="/state/raw/point/x" color="#bcbd22"/>
+       <curve name="/state/filtered/point/x" color="#ff7f0e"/>
+      </plot>
+     </DockArea>
+     <DockArea name="y [m]">
+      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
+       <range left="0" right="40" top="1.6" bottom="-1.6"/>
+       <limitY/>
+       <curve name="/trajectory_eight/reference/point/y" color="#2ca02c"/>
+       <curve name="/state/groundtruth/point/y" color="#1f77b4"/>
+       <curve name="/state/raw/point/y" color="#bcbd22"/>
+       <curve name="/state/filtered/point/y" color="#ff7f0e"/>
+      </plot>
+     </DockArea>
+     <DockArea name="yaw [rad]">
+      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
+       <range left="0" right="40" top="3.5" bottom="-3.5"/>
+       <limitY/>
+       <curve name="/state/groundtruth/point/z" color="#1f77b4"/>
+       <curve name="/state/raw/point/z" color="#bcbd22"/>
+       <curve name="/state/filtered/point/z" color="#ff7f0e"/>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
+  <Tab tab_name="Erro e controle" containers="1">
+   <Container>
+    <DockSplitter orientation="-" sizes="0.5;0.5" count="2">
+     <DockArea name="Erro de seguimento |e| [m]">
+      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
+       <range left="0" right="40" top="1" bottom="0"/>
+       <limitY/>
+       <curve name="/trajectory_eight/error/vector/z" color="#d62728"/>
+      </plot>
+     </DockArea>
+     <DockArea name="Sinais de controle (cmd_vel)">
+      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
+       <range left="0" right="40" top="3" bottom="-3"/>
+       <limitY/>
+       <curve name="/cmd_vel/linear/x" color="#1f77b4"/>
+       <curve name="/cmd_vel/angular/z" color="#ff7f0e"/>
+      </plot>
+     </DockArea>
+    </DockSplitter>
+   </Container>
+  </Tab>
   <Tab tab_name="IMU / GPS" containers="1">
    <Container>
     <DockSplitter orientation="-" sizes="0.25;0.25;0.25;0.25" count="4">
@@ -39,55 +111,6 @@
     </DockSplitter>
    </Container>
   </Tab>
-  <Tab tab_name="Trajetoria em 8" containers="1">
-   <Container>
-    <DockSplitter orientation="-" sizes="0.34;0.33;0.33" count="3">
-     <DockArea name="Posicao: referencia x estimada (GPS) x odom">
-      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
-       <range left="0" right="40" top="1.5" bottom="-1.5"/>
-       <limitY/>
-       <curve name="/trajectory_eight/reference/point/x" color="#2ca02c"/>
-       <curve name="/trajectory_eight/estimate/point/x" color="#ff7f0e"/>
-       <curve name="/trajectory_eight/gps_xy_raw/point/x" color="#bcbd22"/>
-       <curve name="/odom/pose/pose/position/x" color="#d62728"/>
-       <curve name="/trajectory_eight/reference/point/y" color="#17becf"/>
-       <curve name="/trajectory_eight/estimate/point/y" color="#9467bd"/>
-       <curve name="/odom/pose/pose/position/y" color="#8c564b"/>
-      </plot>
-     </DockArea>
-     <DockArea name="Erro de seguimento |e| [m]">
-      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
-       <range left="0" right="40" top="1" bottom="0"/>
-       <limitY/>
-       <curve name="/trajectory_eight/error/vector/z" color="#d62728"/>
-      </plot>
-     </DockArea>
-     <DockArea name="Sinais de controle (cmd_vel)">
-      <plot mode="TimeSeries" style="Lines" flip_x="false" flip_y="false">
-       <range left="0" right="40" top="3" bottom="-3"/>
-       <limitY/>
-       <curve name="/cmd_vel/linear/x" color="#1f77b4"/>
-       <curve name="/cmd_vel/angular/z" color="#ff7f0e"/>
-      </plot>
-     </DockArea>
-    </DockSplitter>
-   </Container>
-  </Tab>
-  <Tab tab_name="Trajetoria XY" containers="1">
-   <Container>
-    <DockSplitter orientation="-" sizes="1" count="1">
-     <DockArea name="XY">
-      <plot mode="XYPlot" style="Lines" flip_x="false" flip_y="false">
-       <range left="-1.5" right="1.5" top="1.5" bottom="-1.5"/>
-       <limitY/>
-       <curve name="ref_xy" color="#2ca02c" curve_x="/trajectory_eight/reference/point/x" curve_y="/trajectory_eight/reference/point/y"/>
-       <curve name="est_xy" color="#ff7f0e" curve_x="/trajectory_eight/estimate/point/x" curve_y="/trajectory_eight/estimate/point/y"/>
-       <curve name="odom_xy" color="#d62728" curve_x="/odom/pose/pose/position/x" curve_y="/odom/pose/pose/position/y"/>
-      </plot>
-     </DockArea>
-    </DockSplitter>
-   </Container>
-  </Tab>
   <currentTabIndex index="0"/>
  </tabbed_widget>
  <use_relative_time_offset enabled="1"/>
@@ -103,10 +126,17 @@
     <topic name="/imu/data"/>
     <topic name="/gps/data"/>
     <topic name="/odom"/>
+    <topic name="/odometry/filtered"/>
+    <topic name="/odometry/gps"/>
+    <topic name="/ground_truth"/>
     <topic name="/cmd_vel"/>
+    <topic name="/state/raw"/>
+    <topic name="/state/filtered"/>
+    <topic name="/state/groundtruth"/>
     <topic name="/trajectory_eight/reference"/>
     <topic name="/trajectory_eight/estimate"/>
     <topic name="/trajectory_eight/gps_xy_raw"/>
+    <topic name="/trajectory_eight/groundtruth"/>
     <topic name="/trajectory_eight/error"/>
    </selected_topics>
    <boolean_strings_to_number value="false"/>
