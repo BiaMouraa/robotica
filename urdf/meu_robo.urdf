@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
+<!-- Robô da Prática 01: modelo no estilo dos tutoriais Make a Robot / Attach Meshes -->
 <robot name="meu_robo">
 
-  <!-- Link de referência para evitar alertas KDL -->
   <link name="base_footprint"/>
 
   <joint name="base_footprint_joint" type="fixed">
@@ -10,7 +10,7 @@
     <origin xyz="0 0 0.1" rpy="0 0 0"/>
   </joint>
 
-  <!-- Base Link (Chassi) -->
+  <!-- Chassi -->
   <link name="base_link">
     <visual>
       <geometry>
@@ -32,7 +32,11 @@
     </inertial>
   </link>
 
-  <!-- Roda Esquerda -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <!-- Roda esquerda -->
   <link name="roda_esquerda">
     <visual>
       <geometry>
@@ -61,7 +65,11 @@
     <axis xyz="0 0 1"/>
   </joint>
 
-  <!-- Roda Direita -->
+  <gazebo reference="roda_esquerda">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Roda direita -->
   <link name="roda_direita">
     <visual>
       <geometry>
@@ -90,7 +98,11 @@
     <axis xyz="0 0 1"/>
   </joint>
 
-  <!-- Rodízio (Caster Wheel) -->
+  <gazebo reference="roda_direita">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- Rodízio (caster) -->
   <link name="caster_wheel">
     <visual>
       <geometry>
@@ -118,24 +130,8 @@
     <origin xyz="0.15 0 -0.1" rpy="0 0 0"/>
   </joint>
 
-  <!-- Plugin Differential Drive do Gazebo ROS -->
-  <gazebo>
-    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
-      <update_rate>50</update_rate>
-      <left_joint>roda_esquerda_joint</left_joint>
-      <right_joint>roda_direita_joint</right_joint>
-      <wheel_separation>0.35</wheel_separation>
-      <wheel_diameter>0.2</wheel_diameter>
-      <max_wheel_torque>20</max_wheel_torque>
-      <max_wheel_acceleration>1.0</max_wheel_acceleration>
-      <command_topic>cmd_vel</command_topic>
-      <publish_odom>true</publish_odom>
-      <publish_odom_tf>true</publish_odom_tf>
-      <publish_wheel_tf>true</publish_wheel_tf>
-      <odometry_topic>odom</odometry_topic>
-      <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_footprint</robot_base_frame>
-    </plugin>
+  <gazebo reference="caster_wheel">
+    <material>Gazebo/Grey</material>
   </gazebo>
 
 </robot>
