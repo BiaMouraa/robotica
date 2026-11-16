@@ -62,7 +62,8 @@ def generate_launch_description():
         Command([
             PathJoinSubstitution([FindExecutable(name='xacro')]), ' ',
             xacro_file, ' ',
-            'noise_scale:=', noise_scale,
+            'noise_scale:=', noise_scale, ' ',
+            'lidar_noise_scale:=', noise_scale,
         ]),
         value_type=str,
     )

@@ -7,7 +7,7 @@ source /opt/ros/humble/setup.bash
 OVERLAY="$HOME/ros_overlay/opt/ros/humble"
 export AMENT_PREFIX_PATH="$OVERLAY:${AMENT_PREFIX_PATH:-}"
 export CMAKE_PREFIX_PATH="$OVERLAY:${CMAKE_PREFIX_PATH:-}"
-export LD_LIBRARY_PATH="$OVERLAY/lib:$HOME/ros_overlay/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH:-}"
+export LD_LIBRARY_PATH="$OVERLAY/lib:$HOME/ros_overlay/usr/lib:$HOME/ros_overlay/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH:-}"
 export PATH="$OVERLAY/bin:${PATH:-}"
 
 if [ -d "$OVERLAY/local/lib/python3.10/dist-packages" ]; then

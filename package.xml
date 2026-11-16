@@ -3,7 +3,7 @@
 <package format="3">
   <name>meu_robo_description</name>
   <version>0.0.0</version>
-  <description>Robo diferencial com IMU, GPS, camera, lidar e EKF (Praticas 02-05 de Robotica)</description>
+  <description>Robo diferencial com sensores, EKF e SLAM (Praticas 02-05.2 de Robotica)</description>
   <maintainer email="matheusendonca@todo.todo">matheusendonca</maintainer>
   <license>TODO: License declaration</license>
 
@@ -26,6 +26,8 @@
   <exec_depend>plotjuggler_ros</exec_depend>
   <exec_depend>tf2_tools</exec_depend>
   <exec_depend>robot_localization</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>teleop_twist_keyboard</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

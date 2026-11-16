@@ -3,12 +3,20 @@
 
   <!-- ============================================================
        ARGUMENTOS / PROPRIEDADES
-       noise_scale: multiplica o desvio-padrao de ruido de TODOS os
-       sensores (Exercicio 2.1: aumentar o ruido e observar o efeito).
-       Ex.: ros2 launch meu_robo_description gazebo.launch.py noise_scale:=5.0
+       noise_scale      : multiplica o ruido de IMU/GPS/camera (pratica 05.1)
+       lidar_noise_scale: multiplica so o ruido do Lidar 2D (pratica 05.2)
+       odom_noise       : vies nas rodas (1.0 = sem vies; >1 exagera diametro)
+       publish_odom_tf  : se false, outro no publica o TF odom->base (GT)
+       Ex.: ros2 launch ... lidar_noise_scale:=5.0 odom_noise:=1.08
        ============================================================ -->
   <xacro:arg name="noise_scale" default="1.0"/>
+  <xacro:arg name="lidar_noise_scale" default="1.0"/>
+  <xacro:arg name="odom_noise" default="1.0"/>
+  <xacro:arg name="publish_odom_tf" default="true"/>
+  <xacro:arg name="odometry_topic" default="odom"/>
   <xacro:property name="ns" value="$(arg noise_scale)"/>
+  <xacro:property name="lidar_ns" value="$(arg lidar_noise_scale)"/>
+  <xacro:property name="odom_ns" value="$(arg odom_noise)"/>
 
   <!-- Desvios-padrao nominais (escala 1.0) -->
   <xacro:property name="imu_gyro_std"  value="0.01"/>   <!-- rad/s -->
@@ -229,11 +237,12 @@
     </sensor>
   </gazebo>
 
-  <!-- 2. LIDAR 2D FRONTAL (nuvem de pontos) -->
+  <!-- 2. LIDAR 2D 360deg (LaserScan para slam_toolbox; PointCloud opcional) -->
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="0.15 0 0.1" rpy="0 0 0"/>
+    <!-- Acima do chassi (altura 0.15) para o scan 360 nao bater no proprio corpo -->
+    <origin xyz="0.0 0 0.22" rpy="0 0 0"/>
   </joint>
 
   <link name="lidar_link">
@@ -242,7 +251,7 @@
       <material name="black"/>
     </visual>
     <collision>
-      <geometry><cylinder radius="0.04" length="0.05"/></geometry>
+      <geometry><cylinder radius="0.01" length="0.01"/></geometry>
     </collision>
     <inertial>
       <mass value="0.1"/>
@@ -261,20 +270,22 @@
           <horizontal>
             <samples>360</samples>
             <resolution>1</resolution>
-            <min_angle>-1.5708</min_angle>
-            <max_angle>1.5708</max_angle>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
           </horizontal>
         </scan>
-        <range><min>0.15</min><max>12.0</max><resolution>0.01</resolution></range>
+        <range><min>0.12</min><max>12.0</max><resolution>0.01</resolution></range>
         <noise>
           <type>gaussian</type>
           <mean>0.0</mean>
-          <stddev>${lidar_std * ns}</stddev>
+          <stddev>${lidar_std * lidar_ns}</stddev>
         </noise>
       </ray>
       <plugin name="lidar_plugin" filename="libgazebo_ros_ray_sensor.so">
-        <ros><remapping>~/out:=/lidar/points</remapping></ros>
-        <output_type>sensor_msgs/PointCloud2</output_type>
+        <ros>
+          <remapping>~/out:=/scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
         <frame_name>lidar_link</frame_name>
       </plugin>
     </sensor>
@@ -372,21 +383,24 @@
     </sensor>
   </gazebo>
 
-  <!-- PLUGIN DE TRAÇÃO DIFERENCIAL -->
+  <!-- PLUGIN DE TRAÇÃO DIFERENCIAL
+       odom_noise > 1.0 introduz vies (diametro "acreditado" maior que o real),
+       gerando drift de dead reckoning para o Exercicio 2.2 da pratica 05.2.
+       publish_odom_tf:=false quando a odometria vem do ground truth. -->
   <gazebo>
     <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <update_rate>50</update_rate>
       <left_joint>roda_esquerda_joint</left_joint>
       <right_joint>roda_direita_joint</right_joint>
       <wheel_separation>0.35</wheel_separation>
-      <wheel_diameter>0.20</wheel_diameter>
+      <wheel_diameter>${0.20 * odom_ns}</wheel_diameter>
       <max_wheel_torque>20</max_wheel_torque>
       <command_topic>cmd_vel</command_topic>
-      <odometry_topic>odom</odometry_topic>
+      <odometry_topic>$(arg odometry_topic)</odometry_topic>
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
       <publish_odom>true</publish_odom>
-      <publish_odom_tf>true</publish_odom_tf>
+      <publish_odom_tf>$(arg publish_odom_tf)</publish_odom_tf>
       <publish_wheel_tf>true</publish_wheel_tf>
     </plugin>
   </gazebo>

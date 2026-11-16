@@ -25,7 +25,7 @@ endif()
 
 ament_package()
 
-install(DIRECTORY urdf launch config worlds
+install(DIRECTORY urdf launch config worlds docs
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -42,4 +42,9 @@ install(PROGRAMS meu_robo_description/trajectory_eight_node.py
 install(PROGRAMS meu_robo_description/sensor_prep_node.py
   DESTINATION lib/${PROJECT_NAME}
   RENAME sensor_prep_node
+)
+
+install(PROGRAMS meu_robo_description/gt_odom_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME gt_odom_node
 )
